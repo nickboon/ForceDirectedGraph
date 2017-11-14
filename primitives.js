@@ -1,14 +1,19 @@
 (function(app) {
-    var defaultBranchRadius = 10,
-        colours = app.createColourObject(),
+    var colours = app.createColourObject(),
+        isNotAPoint = app.createPointsObject().isNotAPoint,
+        defaultBranchRadius = 10,
         CIRCLE_ARC = 2 * Math.PI;
 
-    app.createForceDirectedShapesObject = function(perspective) {
+    app.createForceDirectedShapesObject = function() {
         function createBranch(nodeA, nodeB, r) {
             var pointA = nodeA.centre,
                 pointB = nodeB.centre,
                 colour = nodeA.colour,
                 radius = r || defaultBranchRadius;
+
+            if (isNotAPoint(pointA) || isNotAPoint(pointB)) {
+                throw "You need at least 2 defined vertices for a line.";
+            }
 
             return {
                 points: [pointA, pointB],
@@ -17,7 +22,7 @@
                     return Math.min(pointA.z, pointB.z);
                 },
 
-                draw: function(context, alpha) {
+                draw: function(context, perspective, alpha) {
                     var screenX = perspective.getScreenX,
                         screenY = perspective.getScreenY,
                         pointAScreenX = screenX(pointA),
@@ -27,8 +32,7 @@
 
                         opposite = pointAScreenX - pointBScreenX,
                         adjacent = pointAScreenY - pointBScreenY,
-                        hypotenuse =
-                        Math.sqrt(Math.pow(opposite, 2) + Math.pow(adjacent, 2)),
+                        hypotenuse = Math.sqrt(Math.pow(opposite, 2) + Math.pow(adjacent, 2)),
 
                         scale = perspective.getScale(pointB),
                         screenRadius = radius * scale,
@@ -55,10 +59,6 @@
                     context.restore();
                 }
             };
-        }
-
-        if (!perspective) {
-            throw 'You need to pass in a perspective object to create a branch.';
         }
 
         return {

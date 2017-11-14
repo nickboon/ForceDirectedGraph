@@ -27,16 +27,14 @@
                 g: createNode('Node G Label', '#9999cc'),
                 h: createNode('Node H Label')
             },
-            diagram = app.createDefaultFullScreenDiagram(),
-            stage = diagram.stage,
-            perspective = diagram.perspective,
-            tree = forceDirectedGraphs.solids.createTree(perspective, nodes, edges),
-            transformation = app.createTransformationObject(),
-            inputTranformer = transformation.createKeyboardDrivenTransformer([tree]),
+            stage = app.createStage(),
+            tree = forceDirectedGraphs.solids.createTree(nodes, edges),
+            inputTransformer = app.createInputTransformer([tree]),
             forceDirectedGraphTransformer = app.createForceDirectedGraphTransformationsObject()
             .createDefaultTransformer(nodes, edges, 200);
 
         stage.setSolids([tree]);
-        stage.setTransformers([inputTranformer, forceDirectedGraphTransformer]);
+        stage.setTransformers([inputTransformer, forceDirectedGraphTransformer]);
+        app.createUiObject().setDefaultTransformationKeyListeners(inputTransformer);
     }
 })(window.DIAGRAM_APP || (window.DIAGRAM_APP = {}));

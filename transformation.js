@@ -110,9 +110,6 @@
         }
     }
 
-
-
-    // create and return API for this module
     app.createForceDirectedGraphTransformationsObject = function(cna) {
         var connectedNodesAttraction = cna || defaultConnectedNodesAttraction;
 
@@ -140,7 +137,6 @@
             }
 
             function transform() {
-
                 if (timeLimit > collapseTime) {
                     mutualRepulsion(nodes);
                     attractConnectedNodes(nodes, edges);

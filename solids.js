@@ -1,11 +1,8 @@
 (function(app) {
     app.createForceDirectedGraphSolidsObject = function(defaultSetUp) {
-        function createTree(perspective, nodes, edges, su) {
-            var drawing = app.createDrawingObject(perspective),
-                shapes = app.createShapesObject(drawing),
-                createLabel = shapes.createLabel,
-                createBranch = app.createForceDirectedShapesObject(perspective).createBranch,
-                setUp = su || defaultSetUp,
+        function createTree(nodes, edges, setup) {
+            var createLabel = app.primitives.createLabel,
+                createBranch = app.createForceDirectedShapesObject().createBranch,
                 primitives = [],
                 points = [],
                 key,
@@ -14,7 +11,7 @@
                 label,
                 branch;
 
-            //lables
+            //labels
             for (key in nodes) {
                 if (nodes.hasOwnProperty(key)) {
                     nodeA = nodes[key];
@@ -32,7 +29,8 @@
                 primitives.push(branch);
             });
 
-            setUp(nodes); // put this outside?
+            setup = setup || defaultSetUp;
+            setup(nodes);
 
             return {
                 points: points,
