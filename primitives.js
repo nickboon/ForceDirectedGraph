@@ -5,15 +5,16 @@
         CIRCLE_ARC = 2 * Math.PI;
 
     app.createForceDirectedShapesObject = function() {
-        function createBranch(nodeA, nodeB, r) {
+        function createBranch(nodeA, nodeB, radius) {
             var pointA = nodeA.centre,
                 pointB = nodeB.centre,
-                colour = nodeA.colour,
-                radius = r || defaultBranchRadius;
+                colour = nodeA.colour;
 
             if (isNotAPoint(pointA) || isNotAPoint(pointB)) {
                 throw "You need at least 2 defined vertices for a line.";
             }
+
+            radius = radius || defaultBranchRadius;
 
             return {
                 points: [pointA, pointB],
